@@ -40,11 +40,7 @@ async function getSongs(folder) {
     `;
   }
 
-  // var audio = new Audio(songs[0]);
 
-  // audio.addEventListener("loadeddata", () => {
-  //   let duration = audio.duration;
-  // });
 
   Array.from(
     document.querySelector(".songsList").getElementsByTagName("li")
@@ -84,49 +80,7 @@ async function main() {
   await getSongs("src/songs/cs");
   playMusic(songs[0], true);
 
-  let cardContainer = document.querySelector(".cardContainer");
-
-  // Display all the album on the page
-  let a = await fetch(`http://127.0.0.1:5500/src/songs`);
-
-  let response = await a.text();
-  let div = document.createElement("div");
-  div.innerHTML = response;
-  let anchors = document.getElementsByTagName("a");
-  let array = Array.from(anchors);
-  for (let index = 0; index < array.length; index++) {
-    const element = array[index];
-    if (element.href.includes("src/songs")) {
-      let folder = element.href.split("/").slice(-2)(0);
-      let a = await fetch(
-        `http://127.0.0.1:5500/src/songs/${folder}/info.json`
-      );
-
-      let response = await a.json();
-      cardContainer.innerHTML =
-        cardContainer.innerHTML +
-        `<div
-            data-folder="cs"
-            class="card flex flex-col items-start ml-4 mt-4 scroll-auto cursor-pointer w-1/6"
-          >
-            <div class="relative w-40 h-40">
-              <img
-                src="src/songs/${folder}/cover.jpg"
-                alt="Portrait of CS, the artist"
-                class="w-full h-full rounded-full object-cover"
-              />
-              <button
-                class="playbtn absolute bottom-2 right-2 w-10 h-10 flex items-center justify-center rounded-full bg-green-500 text-black opacity-0 hover:opacity-5"
-              >
-                <i class="ri-play-large-fill text-xl"></i>
-              </button>
-            </div>
-            <div class="mt-4 text-center">
-              <h1 class="text-white text-lg font-semibold">${response.title}</h1>
-              <p class="text-gray-400 flex items-start">${response.description}</p>
-            </div>
-          </div>`;
-    }
+  
     // load the playlist whenever card clicked
     Array.from(document.getElementsByClassName("card")).forEach((element) => {
       element.addEventListener("click", async (item) => {
@@ -135,7 +89,7 @@ async function main() {
         );
       });
     });
-  }
+  
 
   play.addEventListener("click", () => {
     if (currentSongs.paused) {
@@ -203,56 +157,14 @@ async function main() {
     document;
   });
 
-  // volume.addEventListener("click", () => {
-  //   if (currentSongs.muted ) {
-  //     currentSongs.muted = false;
-
-  //     volume.classList.remove("ri-volume-mute-line");
-  //     volume.classList.add("ri-volume-up-line");
-
-  //       // currentSongs.volume = 10;
-
-  //     document.querySelector(".slider").getElementsByTagName("input")[0].value = 0;
-
-  //   } else {
-  //     currentSongs.muted = true;
-  //     volume.classList.remove("ri-volume-up-line");
-  //     volume.classList.add("ri-volume-mute-line");
-  //     currentSongs.volume = 10;
-  //     document.querySelector(".slider").getElementsByTagName("input")[1].value = 10;
-  //   }
-  // });
-
-  // // Add an event to volume
-  // document
-  //   .querySelector(".slider").addEventListener("change", (e) => {
-  //     console.log("Setting volume to", e.target.value, "/ 100");
-  //     currentSongs.volume = parseInt(e.target.value) / 100;
-  //     if (currentSongs.volume > 0) {
-  //       volume.classList.add("ri-volume-up-line");
-  //       volume.classList.remove("ri-volume-mute-line");
-  //       document.querySelector("#volume") = document
-  //         .querySelector("#volume")
-  //         document.querySelector(".slider").getElementsByTagName("input")[0].value = 10;
-
-  //     }
-
-  //     else{
-  //       volume.classList.remove("ri-volume-up-line");
-  //       volume.classList.add("ri-volume-mute-line");
-  //       document.querySelector(".slider").getElementsByTagName("input")[0].value = 0;
-  //     }
-
-  //   });
-
   // Add an event to volume
   document
     .querySelector(".range")
     .getElementsByTagName("input")[0]
     .addEventListener("change", (e) => {
       console.log("Setting volume to", e.target.value, "/ 100");
-      currentSong.volume = parseInt(e.target.value) / 100;
-      if (currentSong.volume > 0) {
+      currentSongs.volume = parseInt(e.target.value) / 100;
+      if (currentSongs.volume > 0) {
         document.querySelector(".volume>img").src = document
           .querySelector(".volume>img")
           .src.replace("src/images/mute.svg", "src/images/volume.svg");
@@ -266,7 +178,7 @@ async function main() {
         "src/images/volume.svg",
         "src/images/mute.svg"
       );
-      currentSong.volume = 0;
+      currentSongs.volume = 0;
       document
         .querySelector(".range")
         .getElementsByTagName("input")[0].value = 0;
@@ -275,7 +187,7 @@ async function main() {
         "src/images/mute.svg",
         "src/images/volume.svg"
       );
-      currentSong.volume = 0.1;
+      currentSongs.volume = 0.1;
       document
         .querySelector(".range")
         .getElementsByTagName("input")[0].value = 10;
